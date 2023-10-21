@@ -25,9 +25,24 @@ let userSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  exercises: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Exercise",
+    },
+  ],
 });
 
 const User = mongoose.model("User", userSchema);
+
+// Exercice Schema
+let exerciseSchema = new mongoose.Schema({
+  description: String,
+  duration: Number,
+  date: Date,
+});
+
+const Exercise = mongoose.model("Exercise", exerciseSchema);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
@@ -41,6 +56,15 @@ app.post("/api/users", async (req, res) => {
     res.json(savedUser);
   } catch (err) {
     res.json({ error: err.message });
+  }
+});
+
+app.get("/api/users", async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
