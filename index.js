@@ -44,6 +44,20 @@ let exerciseSchema = new mongoose.Schema({
 
 const Exercise = mongoose.model("Exercise", exerciseSchema);
 
+// utils functions
+function formatDate(inputDate) {
+  const date = new Date(inputDate);
+
+  const options = {
+    weekday: "short",
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  };
+
+  return date.toLocaleDateString("en-US", options);
+}
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
